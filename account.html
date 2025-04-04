@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Account - The SunTides Crochet</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html">
+            <img src="images/The SunTides Crochet Logo.png" alt="The SunTides Crochet Logo"></a>
+        </div>
+        <h1>THE SUNTIDES CROCHET</h1>
+            <nav>
+                <button class="menu-toggle" onclick="toggleMenu()">Menu</button> <!-- Toggle Button -->
+                    <div id="nav-menu">
+                <a href="products.html">New</a>
+                <a href="products.html">Patterns</a>
+                <a href="products.html">Wearables</a>
+                <a href="products.html">Tutorials</a>
+                <a href="about_us.html">About Us</a>
+                <div class="icons">
+                    <a href="search.html" class="icon" title="Search">
+                        <img src="images/search.png" alt="Search Icon" width="30" height="30">
+                    </a>
+                    <a href="sign_up.html" class="icon" title="User Profile">
+                        <img src="images/user.png" alt="User Icon" width="30" height="30">
+                    </a>
+                    <a href="cart.html" class="icon" title="Shopping Cart">
+                        <img src="images/shopping-cart.png" alt="Shopping Cart Icon" width="30" height="30">
+                    </a>
+                </div>
+               </div>
+            </nav>
+    </header>
+
+    <section class="account-section">
+        <h2>Welcome to Your Account!</h2>
+
+        <p><strong>Username:</strong> <span id="user-name">JohnDoe</span></p>
+        <p><strong>Email:</strong> <span id="user-email">john.doe@example.com</span></p>
+
+        <h3>Your Orders</h3>
+        <p>You have no orders placed yet.</p>
+
+        <h3>Account Settings</h3>
+        <p><a href="update-profile.html">Update your profile</a></p>
+        <p><a href="change-password.html">Change your password</a></p>
+
+        <footer>
+            <p>&copy; 2025 The SunTides Crochet | All rights reserved</p>
+        </footer>
+    </section>
+
+    <script>
+        function toggleMenu() {
+    var menu = document.getElementById("nav-menu");
+    menu.classList.toggle("show");
+        }
+    // Toggle the dropdown on smaller devices
+        document.querySelectorAll('.dropdown > a').forEach(function(dropdownLink) {
+            dropdownLink.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default link behavior (if needed)
+                var parent = dropdownLink.parentElement; // Get the dropdown parent
+                parent.classList.toggle('show'); // Toggle 'show' class to show/hide the dropdown menu
+            });
+                });
+                
+        // account.js
+
+        function logout() {
+            // Clear session or local storage if you're using client-side storage
+            alert("You have logged out successfully.");
+
+            // Redirect to login page or home page after logging out
+            window.location.href = 'login.html';  // Or 'index.html' if you want to redirect to homepage
+        }
+
+
+        // Node.js Express Example for Login
+const express = require('express');
+const session = require('express-session');
+const app = express();
+
+app.use(express.urlencoded({ extended: true }));
+app.use(session({
+    secret: 'yourSecretKey',
+    resave: false,
+    saveUninitialized: true
+}));
+
+// Fake user data for demo
+const users = [
+    { username: 'admin', password: 'password123', email: 'admin@example.com' }
+];
+
+// Login POST endpoint
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    const user = users.find(u => u.username === username && u.password === password);
+    
+    if (user) {
+        req.session.user = user;  // Store user info in session
+        res.redirect('/account'); // Redirect to the account page after login
+    } else {
+        res.send('Invalid username or password');
+    }
+});
+
+// Account page (only accessible if logged in)
+app.get('/account', (req, res) => {
+    if (req.session.user) {
+        res.send(`Welcome ${req.session.user.username}, Email: ${req.session.user.email}`);
+    } else {
+        res.redirect('/login');  // Redirect to login if not authenticated
+    }
+});
+
+// Log out
+app.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        res.redirect('/login');  // Redirect to login after logging out
+    });
+});
+
+app.listen(3000, () => {
+    console.log('Server running on http://localhost:3000');
+});
+
+    </script>
+</body>
+</html>
